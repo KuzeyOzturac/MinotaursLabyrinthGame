@@ -1,12 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Theseus & Minotaur</title>
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Minotaur's Labyrinth</title>
+
+    <!-- --- Load p5.js --- -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
+
+    <!-- --- Load p5.sound (REQUIRED FOR AUDIO!) --- -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/addons/p5.sound.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: black;
+            font-family: sans-serif;
+        }
+
+        #startMessage {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 22px;
+            background: rgba(0,0,0,0.6);
+            padding: 16px 24px;
+            border-radius: 8px;
+            text-align: center;
+            z-index: 10;
+        }
+    </style>
 </head>
+
 <body>
-  <main></main>
-  <script src="sketch.js"></script>
+
+<!-- Message prompting the user to click (audio unlock requirement) -->
+<div id="startMessage">
+    CLICK OR PRESS ANY KEY TO ENABLE SOUND<br>
+    THEN THE GAME WILL START
+</div>
+
+<script>
+    // This script unlocks audio before sketch.js runs
+
+    let audioUnlocked = false;
+
+    function unlockAudio() {
+        if (!audioUnlocked) {
+            try {
+                userStartAudio();    // <- required for browser audio
+            } catch (e) {
+                console.warn("Audio unlock failed:", e);
+            }
+
+            audioUnlocked = true;
+            document.getElementById("startMessage").style.display = "none";
+
+            // Now load your actual sketch
+            let script = document.createElement("script");
+            script.src = "sketch.js?v=" + Date.now(); // cache-bust
+            document.body.appendChild(script);
+        }
+    }
+
+    // User input triggers unlock + loads sketch.js
+    document.body.addEventListener("click", unlockAudio);
+    document.body.addEventListener("keydown", unlockAudio);
+
+</script>
+
 </body>
 </html>
