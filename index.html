@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Minotaur's Labyrinth</title>
 
-    <!-- --- Load p5.js --- -->
+    <!-- p5.js core -->
     <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
 
-    <!-- --- Load p5.sound (REQUIRED FOR AUDIO!) --- -->
+    <!-- p5.sound (REQUIRED!) -->
     <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/addons/p5.sound.min.js"></script>
 
     <style>
@@ -18,60 +17,58 @@
             padding: 0;
             overflow: hidden;
             background: black;
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
         }
 
-        #startMessage {
+        #soundUnlock {
             position: absolute;
-            left: 50%;
             top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
+            font-size: 24px;
             color: white;
-            font-size: 22px;
-            background: rgba(0,0,0,0.6);
-            padding: 16px 24px;
-            border-radius: 8px;
             text-align: center;
-            z-index: 10;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-<!-- Message prompting the user to click (audio unlock requirement) -->
-<div id="startMessage">
+<div id="soundUnlock">
     CLICK OR PRESS ANY KEY TO ENABLE SOUND<br>
     THEN THE GAME WILL START
 </div>
 
 <script>
-    // This script unlocks audio before sketch.js runs
-
+    // BLOCK game start until sound is unlocked
     let audioUnlocked = false;
 
     function unlockAudio() {
         if (!audioUnlocked) {
             try {
-                userStartAudio();    // <- required for browser audio
+                userStartAudio();     // REQUIRED for sound on web
             } catch (e) {
-                console.warn("Audio unlock failed:", e);
+                console.log("Audio unlock error:", e);
             }
-
             audioUnlocked = true;
-            document.getElementById("startMessage").style.display = "none";
 
-            // Now load your actual sketch
-            let script = document.createElement("script");
-            script.src = "sketch.js?v=" + Date.now(); // cache-bust
-            document.body.appendChild(script);
+            document.getElementById("soundUnlock").style.display = "none";
+
+            // Start your p5 sketch NOW
+            startSketch();
         }
     }
 
-    // User input triggers unlock + loads sketch.js
     document.body.addEventListener("click", unlockAudio);
     document.body.addEventListener("keydown", unlockAudio);
 
+    function startSketch() {
+        // Actually load your game code
+        const script = document.createElement("script");
+        script.src = "sketch.js";  // MUST match your file name exactly
+        document.body.appendChild(script);
+    }
 </script>
 
 </body>
