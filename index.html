@@ -1,75 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Minotaur's Labyrinth</title>
-
-    <!-- p5.js core -->
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
-
-    <!-- p5.sound (REQUIRED!) -->
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/addons/p5.sound.min.js"></script>
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: black;
-            font-family: Arial, sans-serif;
-        }
-
-        #soundUnlock {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            color: white;
-            text-align: center;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Minotaur's Labyrinth</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.min.js"></script>
 </head>
-
 <body>
-
-<div id="soundUnlock">
-    CLICK OR PRESS ANY KEY TO ENABLE SOUND<br>
-    THEN THE GAME WILL START
-</div>
-
-<script>
-    // BLOCK game start until sound is unlocked
-    let audioUnlocked = false;
-
-    function unlockAudio() {
-        if (!audioUnlocked) {
-            try {
-                userStartAudio();     // REQUIRED for sound on web
-            } catch (e) {
-                console.log("Audio unlock error:", e);
-            }
-            audioUnlocked = true;
-
-            document.getElementById("soundUnlock").style.display = "none";
-
-            // Start your p5 sketch NOW
-            startSketch();
-        }
-    }
-
-    document.body.addEventListener("click", unlockAudio);
-    document.body.addEventListener("keydown", unlockAudio);
-
-    function startSketch() {
-        // Actually load your game code
-        const script = document.createElement("script");
-        script.src = "sketch.js";  // MUST match your file name exactly
-        document.body.appendChild(script);
-    }
-</script>
-
+  <main></main>
+  <script src="sketch.js"></script>
 </body>
 </html>
